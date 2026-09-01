@@ -1,0 +1,203 @@
+@import "tailwindcss";
+
+/* ============================================================================
+ * Category Checker — design tokens (msnugget brand)
+ * Ported from msn-errorhunter's css/themes.css + DESIGN.md.
+ *   :root                  -> msnugget DARK palette  (the DEFAULT brand theme)
+ *   [data-theme="dark"]    -> identical DARK palette  (explicit dark)
+ *   [data-theme="light"]   -> clean LIGHT palette keeping the green accent
+ * checker.ts resolves the "auto" setting to either "light" or "dark" via matchMedia.
+ *
+ * Category taxonomy (web-filtering categories) — each gets a hue used by chips:
+ *   Business, Social Media, Streaming, Adult, Gambling, Malware, Phishing,
+ *   News, Education, Cloud/SaaS, Uncategorized.
+ * ==========================================================================*/
+
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Surfaces — Carbon / Surface Ash / Code Surface */
+  --bg: #181818;
+  --bg-elev: #303030;
+  --bg-grid: #0f0f0f;
+
+  /* Text */
+  --fg: #a0a0a0;
+  --fg-dim: #a0a0a0;
+  --fg-faint: #666666;
+  --heading: #ffffff;
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.18);
+
+  /* Accent — Signal Green, used sparingly */
+  --accent: #39a751;
+  --accent-fg: #ffffff;
+  --accent-soft: rgba(57, 167, 81, 0.15);
+  --accent-border: rgba(57, 167, 81, 0.55);
+  --accent-btn: #39a751;
+  --accent-deep: #2a7d3c;
+
+  /* Status hues */
+  --err: #ff6b6b;
+  --warn: #e3a84b;
+  --ok: #39a751;
+  --info: #7aa2c4;
+  --muted-status: #9aa1a8;
+
+  /* Category chip hues */
+  --cat-business: #6cc8ff;
+  --cat-social: #b39cf6;
+  --cat-streaming: #ffb86b;
+  --cat-adult: #ff8fa3;
+  --cat-gambling: #e3a84b;
+  --cat-malware: #ff6b6b;
+  --cat-phishing: #ff8fa3;
+  --cat-news: #7ad6c0;
+  --cat-education: #8bd17c;
+  --cat-cloud: #67c0e0;
+  --cat-uncategorized: #9aa1a8;
+
+  --hover-bg: rgba(255, 255, 255, 0.06);
+  --active-bg: rgba(255, 255, 255, 0.1);
+
+  --shadow: rgba(0, 0, 0, 0.6);
+  --scroll-thumb: rgba(255, 255, 255, 0.16);
+
+  --font-ui: -apple-system, "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Cascadia Code", "Fira Code", "Consolas", "SF Mono", monospace;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #ffffff;
+  --bg-elev: #f3f4f6;
+  --bg-grid: #1e1e1e;
+
+  --fg: #4a4a4a;
+  --fg-dim: #4a4a4a;
+  --fg-faint: #888888;
+  --heading: #111111;
+
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.16);
+
+  --accent: #2a7d3c;
+  --accent-fg: #ffffff;
+  --accent-soft: rgba(57, 167, 81, 0.12);
+  --accent-border: rgba(57, 167, 81, 0.45);
+  --accent-btn: #2a7d3c;
+  --accent-deep: #1f5c2c;
+
+  --err: #c33232;
+  --warn: #b9791f;
+  --ok: #1f8f3d;
+  --info: #3b6ea5;
+  --muted-status: #5b665f;
+
+  --cat-business: #1f6fb2;
+  --cat-social: #6b4fc4;
+  --cat-streaming: #b9791f;
+  --cat-adult: #c23a55;
+  --cat-gambling: #9a6a14;
+  --cat-malware: #c33232;
+  --cat-phishing: #c23a55;
+  --cat-news: #1f8f7d;
+  --cat-education: #2f8f2a;
+  --cat-cloud: #2076a0;
+  --cat-uncategorized: #5b665f;
+
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  --active-bg: rgba(0, 0, 0, 0.08);
+
+  --shadow: rgba(16, 24, 40, 0.16);
+  --scroll-thumb: rgba(0, 0, 0, 0.18);
+}
+
+/* Tailwind v4 CSS-first theme: expose the tokens above as utilities
+   (bg-bg, bg-bg-elev, text-heading, text-fg, border-border, rounded-pill, ...). */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-bg-grid: var(--bg-grid);
+  --color-fg: var(--fg);
+  --color-fg-faint: var(--fg-faint);
+  --color-heading: var(--heading);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-border: var(--accent-border);
+  --color-accent-deep: var(--accent-deep);
+  --color-err: var(--err);
+  --color-warn: var(--warn);
+  --color-ok: var(--ok);
+  --color-info: var(--info);
+  --color-muted-status: var(--muted-status);
+
+  --font-sans: var(--font-ui);
+  --font-mono: var(--font-mono);
+
+  --radius-pill: 999px;
+  --radius-card: 16px;
+  --radius-xl: 12px;
+}
+
+/* Smooth theme-switch transition on the chrome only (respects reduced motion). */
+body,
+.app-bar,
+.result-card,
+.toast {
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1000;
+  background: var(--accent);
+  color: var(--accent-fg);
+  padding: 12px 20px;
+  border-radius: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  left: 0;
+}

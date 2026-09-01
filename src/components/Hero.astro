@@ -1,0 +1,67 @@
+---
+import Button from "@/components/Button.astro";
+
+const examples = ["microsoft.com", "github.com", "youtube.com"];
+---
+
+<section class="wrap flex flex-col items-center gap-6 pb-16 pt-16 text-center sm:pt-24" aria-labelledby="hero-title">
+  <span class="inline-flex items-center gap-2 rounded-pill border border-accent-border bg-accent-soft px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[1.1px] text-heading">
+    <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+    5 security &amp; filtering providers checked at once
+  </span>
+
+  <h1 id="hero-title" class="text-balance text-[36px] font-medium leading-[1.1] tracking-[-0.5px] text-heading sm:text-[56px] sm:tracking-[-1.12px]">
+    Category <span class="text-accent">Checker</span>
+  </h1>
+
+  <p class="max-w-[540px] text-[16px] leading-relaxed text-fg">
+    Check how websites are categorized across security and web filtering platforms.
+  </p>
+
+  <form id="checker-form" class="mt-2 flex w-full max-w-[560px] flex-col gap-3 sm:flex-row" role="search" autocomplete="off">
+    <div class="relative flex-1">
+      <svg
+        class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-fg-faint"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+      <input
+        type="text"
+        id="checker-input"
+        name="domain"
+        placeholder="e.g. microsoft.com"
+        aria-label="Website URL or domain name"
+        spellcheck="false"
+        autocapitalize="off"
+        autocorrect="off"
+        class="h-[52px] w-full rounded-pill border border-border-strong bg-bg-elev pl-11 pr-4 font-mono text-[14px] text-heading placeholder:text-fg-faint focus:border-accent focus:shadow-[0_0_0_3px_var(--accent-soft)] focus:outline-none"
+      />
+    </div>
+    <Button type="submit" id="checker-submit">Check Category &rarr;</Button>
+  </form>
+
+  <p id="checker-error" class="min-h-[1.2em] text-[13px] text-err" aria-live="assertive" aria-atomic="true"></p>
+
+  <div class="flex flex-wrap items-center justify-center gap-2 text-[12px] text-fg-faint">
+    <span>Try:</span>
+    {
+      examples.map((domain) => (
+        <button type="button" class="example-chip rounded-pill border border-border-strong px-3 py-1 font-mono text-fg transition-colors hover:bg-[var(--hover-bg)] hover:text-heading" data-domain={domain}>
+          {domain}
+        </button>
+      ))
+    }
+  </div>
+
+  <div id="recent-lookups" class="hidden flex-wrap items-center justify-center gap-2 text-[12px] text-fg-faint" aria-label="Recent lookups">
+    <span>Recent:</span>
+    <div id="recent-chips" class="flex flex-wrap items-center justify-center gap-2"></div>
+    <button type="button" id="clear-recent" class="text-fg-faint underline hover:text-fg">Clear</button>
+  </div>
+</section>

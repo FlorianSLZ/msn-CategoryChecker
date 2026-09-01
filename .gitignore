@@ -1,0 +1,16 @@
+# build
+dist/
+.astro/
+.wrangler/
+
+# dependencies
+node_modules/
+
+# env
+.env
+.env.local
+
+# editor
+.vscode/*
+!.vscode/settings.json
+.DS_Store

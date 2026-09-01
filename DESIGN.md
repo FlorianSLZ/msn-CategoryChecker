@@ -1,0 +1,116 @@
+---
+name: msnugget Category Checker
+description: Multi-provider website category checker for security and network administrators
+colors:
+  signal-green: "#39a751"
+  signal-green-deep: "#2a7d3c"
+  carbon: "#181818"
+  surface-ash: "#303030"
+  code-surface: "#0f0f0f"
+  ink-dark: "#ffffff"
+  body-dark: "#a0a0a0"
+  muted-dark: "#666666"
+  canvas-light: "#ffffff"
+  surface-light: "#f3f4f6"
+  ink-light: "#111111"
+  body-light: "#4a4a4a"
+  muted-light: "#888888"
+typography:
+  display:
+    fontFamily: "-apple-system, 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif"
+    fontSize: "56px"
+    fontWeight: 500
+    lineHeight: 1.1
+    letterSpacing: "-1.12px"
+  headline:
+    fontFamily: "-apple-system, 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif"
+    fontSize: "36px"
+    fontWeight: 500
+    lineHeight: 1.15
+    letterSpacing: "-0.5px"
+  body:
+    fontFamily: "-apple-system, 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif"
+    fontSize: "14px"
+    fontWeight: 400
+    lineHeight: 1.6
+  label:
+    fontFamily: "-apple-system, 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif"
+    fontSize: "11px"
+    fontWeight: 600
+    letterSpacing: "1.1px"
+  mono:
+    fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'SF Mono', monospace"
+    fontSize: "13px"
+    lineHeight: 1.75
+rounded:
+  full: "999px"
+  card: "16px"
+  xl: "12px"
+spacing:
+  xxxs: "4px"
+  xxs: "8px"
+  xs: "16px"
+  sm: "24px"
+  md: "32px"
+  lg: "48px"
+  xl: "64px"
+  xxl: "96px"
+---
+
+# Design System: msnugget Category Checker
+
+This design system is adapted directly from [Error Hunter](https://errorhunter.app)'s (`msn-errorhunter`) reference design — same brand, same "Signal Palette," same component grammar. Only the domain-specific language changes: "error code" → "URL/domain," Intune error-family categories → web-filtering categories, single-winner lookup → multi-provider result grid.
+
+## 1. Overview
+
+**Creative North Star: "One search, five verdicts."** Visitors arrive with one question — how is this domain categorized? — and want five answers side by side, fast. Marketing sections build trust and explain the provider architecture; the search bar and the result-card grid are the actual product.
+
+Dark by default, for the same reason as the rest of the msnugget family: this is IT tooling, not a consumer product, and admins often work in low-ambient, multi-monitor environments. One committed accent (Signal Green, `#39a751`) is used only on active, confirmed, and actionable states.
+
+## 2. Colors: The Signal Palette
+
+Identical token values to the rest of the msnugget family (see `src/styles/global.css` for the exact CSS custom properties). Same named rules apply:
+
+- **The Signal Rule.** Signal Green covers no more than ~10% of any screen. It means active/confirmed/actionable — never decorative.
+- **The Muted Warning.** `#666666` (dark) / `#888888` (light) is decorative-only and fails WCAG AA for body text. Use Body (`#a0a0a0` dark / `#4a4a4a` light) or Ink for anything the user must read.
+
+### Category taxonomy
+
+Where the reference used one hue per Intune error family, this project uses one hue per web-filtering category (`--cat-business`, `--cat-social`, `--cat-streaming`, `--cat-adult`, `--cat-gambling`, `--cat-malware`, `--cat-phishing`, `--cat-news`, `--cat-education`, `--cat-cloud`, `--cat-uncategorized`) — same mechanism, new taxonomy.
+
+### Status badges
+
+Per-provider result status uses the same ok/warn/err/info vocabulary as the reference, remapped:
+
+| Status | Meaning | Color |
+|---|---|---|
+| `categorized` | Provider returned a category | `--ok` (Signal Green family) |
+| `uncategorized` | Provider has no category for this domain | `--warn` |
+| `error` | Provider lookup failed | `--err` |
+| `pending` | Check in progress | `--info` |
+
+## 3. Typography
+
+System font stack, no web fonts — identical to the reference, for the same reason: instant render, native OS legibility, zero FOUT.
+
+## 4. Radius grammar
+
+Unchanged: `999px` (pill) on every interactive control — buttons, the search input, chips, status badges, toast. `16px` (card) on content containers — result cards, FAQ items.
+
+## 5. Elevation
+
+Flat at rest. Result cards reveal a border + `0 4px 16px rgba(0,0,0,0.25)` shadow together on hover, never independently — same compound-state rule as the reference.
+
+## 6. Do's and Don'ts
+
+Carried over unchanged from the reference (see `msn-errorhunter/DESIGN.md` for the full original if needed):
+
+- **Do** reserve Signal Green for active/confirmed/actionable states only.
+- **Do** apply pill radius to every interactive control, card radius to every content container.
+- **Do** keep dark as the primary surface; light is a user toggle, not the default.
+- **Do** provide a visible `outline: 2px solid var(--accent); outline-offset: 2px` on every `:focus-visible` state.
+- **Do** respect `prefers-reduced-motion` on every transition.
+- **Don't** use Muted (`#666666`/`#888888`) for content text.
+- **Don't** add resting shadows.
+- **Don't** style this to look like an official Microsoft, Fortinet, Cisco, Zscaler, or Netskope product — no vendor color palettes, no implied affiliation.
+- **Don't** introduce a second accent color.

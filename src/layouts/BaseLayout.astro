@@ -1,0 +1,100 @@
+---
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Seo from "@/components/Seo.astro";
+import "@/styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <script is:inline>
+      // Set the theme before first paint (avoids a flash of the wrong theme's
+      // background) — must stay in sync with the toggle logic further down.
+      (function () {
+        try {
+          var stored = localStorage.getItem("cc-theme");
+          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.setAttribute("data-theme", stored || (prefersDark ? "dark" : "light"));
+        } catch {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
+    <Seo title={title} description={description} path={Astro.url.pathname} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <div id="toast-host" class="pointer-events-none fixed inset-x-0 bottom-6 z-200 flex justify-center" aria-live="polite"></div>
+
+    <script>
+      (function () {
+        const STORAGE_KEY = "cc-theme";
+        const root = document.documentElement;
+        // data-theme is already set by the blocking <head> script; this only
+        // wires up the toggle and syncs the icon to whatever it resolved to.
+
+        function syncIcons() {
+          const isLight = root.getAttribute("data-theme") === "light";
+          document.getElementById("theme-icon-dark")?.classList.toggle("hidden", isLight);
+          document.getElementById("theme-icon-light")?.classList.toggle("hidden", !isLight);
+        }
+        syncIcons();
+
+        document.getElementById("theme-toggle")?.addEventListener("click", () => {
+          const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+          root.setAttribute("data-theme", next);
+          localStorage.setItem(STORAGE_KEY, next);
+          syncIcons();
+        });
+      })();
+    </script>
+
+    {
+      import.meta.env.PUBLIC_ANALYTICS_PROVIDER === "plausible" && import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN && (
+        <script
+          is:inline
+          defer
+          data-domain={import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN}
+          src={import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_URL ?? "https://plausible.io/js/script.js"}
+        />
+      )
+    }
+    {
+      import.meta.env.PUBLIC_ANALYTICS_PROVIDER === "umami" && import.meta.env.PUBLIC_UMAMI_WEBSITE_ID && (
+        <script
+          is:inline
+          defer
+          data-website-id={import.meta.env.PUBLIC_UMAMI_WEBSITE_ID}
+          src={import.meta.env.PUBLIC_UMAMI_SCRIPT_URL}
+        />
+      )
+    }
+  </body>
+</html>
+
+<style is:global>
+  .wrap {
+    width: 100%;
+    max-width: 1120px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+</style>

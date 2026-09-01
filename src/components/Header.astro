@@ -1,0 +1,47 @@
+---
+---
+
+<header class="app-bar sticky top-0 z-100 h-16 border-b border-border bg-bg" role="banner">
+  <div class="wrap flex h-full items-center justify-between gap-4">
+    <a href="/" class="flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.65px]">
+      <svg class="h-8 w-8 text-accent" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect x="1" y="1" width="30" height="30" rx="8" ry="8" fill="currentColor"></rect>
+        <path
+          d="M16 7l7 3v6c0 5-3.2 8.4-7 9.6C12.2 24.4 9 21 9 16v-6l7-3z"
+          fill="none"
+          stroke="#ffffff"
+          stroke-width="2.2"
+          stroke-linejoin="round"></path>
+        <path
+          d="M12.5 16l2.5 2.5 5-5"
+          fill="none"
+          stroke="#ffffff"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+      <span><span class="text-accent">msnugget</span><span class="text-fg-faint"> &middot; </span><span class="text-heading">category checker</span></span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden items-center gap-6 sm:flex">
+      <a href="/#providers" class="text-[13px] font-semibold tracking-[0.5px] text-fg hover:text-heading">Providers</a>
+      <a href="/#faq" class="text-[13px] font-semibold tracking-[0.5px] text-fg hover:text-heading">FAQ</a>
+      <a href="/about" class="text-[13px] font-semibold tracking-[0.5px] text-fg hover:text-heading">About</a>
+    </nav>
+
+    <button
+      type="button"
+      id="theme-toggle"
+      class="flex h-9 w-9 items-center justify-center rounded-full border border-border-strong text-fg-faint transition-colors hover:bg-[var(--hover-bg)]"
+      aria-label="Toggle dark and light theme"
+    >
+      <svg id="theme-icon-dark" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+      </svg>
+      <svg id="theme-icon-light" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"></path>
+      </svg>
+    </button>
+  </div>
+</header>

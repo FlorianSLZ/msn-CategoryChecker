@@ -1,0 +1,42 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const lastUpdated = "2026-08-31";
+---
+
+<BaseLayout title="Terms of Use | Category Checker" description="Terms for using the Category Checker tool.">
+  <section class="wrap flex max-w-[720px] flex-col gap-6 py-16">
+    <h1 class="text-[36px] font-medium leading-[1.15] tracking-[-0.5px] text-heading">Terms of Use</h1>
+    <p class="text-[13px] text-fg-faint">Last updated: {lastUpdated}</p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">Acceptance</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      By using Category Checker, you agree to these terms. If you don't agree, don't use the tool.
+    </p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">No warranty</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      Category Checker is provided "as is," free of charge, with no guarantee of accuracy, availability, or fitness for a
+      particular purpose. Provider results — including the currently mocked sample data — should always be confirmed
+      against the provider's own console before being relied on for a security or access-control decision.
+    </p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">Independence</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      Category Checker is an independent project and is not affiliated with, endorsed by, or sponsored by Microsoft,
+      Fortinet, Cisco, Zscaler, or Netskope. Their product and company names are trademarks of their respective owners.
+    </p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">Acceptable use</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      Don't use Category Checker to abuse, overload, or attempt to circumvent rate limits on this site or any third-party
+      provider it queries.
+    </p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">Changes</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      These terms may change as the tool evolves. Continued use after a change constitutes acceptance of the updated
+      terms.
+    </p>
+  </section>
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="About | Category Checker" description="What Category Checker is, who it's for, and how the provider architecture works.">
+  <section class="wrap flex max-w-[720px] flex-col gap-6 py-16">
+    <h1 class="text-[36px] font-medium leading-[1.15] tracking-[-0.5px] text-heading">About Category Checker</h1>
+
+    <p class="text-[15px] leading-relaxed text-fg">
+      Category Checker is a free MSNugget tool that checks how a website or URL is categorized across security and web
+      filtering platforms. It's built for Microsoft Global Secure Access administrators, security administrators, network
+      administrators, cloud architects, and IT professionals who need to validate category-based access decisions quickly.
+    </p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">Why it exists</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      Category-based access policies (in Global Secure Access, a secure web gateway, or a firewall) only work correctly if
+      every enforcement point agrees on how a domain is categorized. In practice, vendors disagree — a domain can be
+      "Business" in one console and "Uncategorized" in another. Category Checker surfaces that disagreement in one place
+      instead of five browser tabs.
+    </p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">How it works</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      Every provider implements the same <code class="font-mono text-[13px] text-accent">CategoryProvider</code> interface.
+      Today, all five providers return mock, deterministic sample data so the interface and architecture can be built and
+      validated before wiring in real vendor APIs. See
+      <a href="https://msnugget.com/" class="underline hover:text-heading">msnugget.com</a> for the rest of the MSNugget
+      tool family, and this project's <code class="font-mono text-[13px] text-accent">ARCHITECTURE.md</code> for the technical
+      design.
+    </p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">Independence</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      Category Checker is an independent, community-built tool. It is not affiliated with, endorsed by, or sponsored by
+      Microsoft, Fortinet, Cisco, Zscaler, or Netskope.
+    </p>
+  </section>
+</BaseLayout>

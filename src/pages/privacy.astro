@@ -1,0 +1,44 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const lastUpdated = "2026-08-31";
+---
+
+<BaseLayout title="Privacy Policy | Category Checker" description="How Category Checker handles the domains you check and any analytics data.">
+  <section class="wrap flex max-w-[720px] flex-col gap-6 py-16">
+    <h1 class="text-[36px] font-medium leading-[1.15] tracking-[-0.5px] text-heading">Privacy Policy</h1>
+    <p class="text-[13px] text-fg-faint">Last updated: {lastUpdated}</p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">What we don't do</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      Category Checker does not require an account, does not sell data, and does not store the domains you check in any
+      database. Domains you submit are sent only to this site's own API route to run the category lookup, and are not
+      logged or persisted server-side.
+    </p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">Local storage</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      Your recently checked domains and theme preference are stored only in your browser's local storage, on your device.
+      This data is never transmitted to us and can be cleared at any time using the "Clear" control or your browser's site
+      data settings.
+    </p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">Analytics</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      This site may use privacy-respecting, cookie-free analytics (Plausible or Umami) to understand aggregate traffic —
+      no personally identifiable information is collected, and no cross-site tracking is performed. Which provider, if
+      any, is active is controlled by this deployment's environment configuration.
+    </p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">Third-party providers</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      When real provider integrations are enabled, the domain you submit is forwarded to that provider's API solely to
+      retrieve its categorization. Refer to each provider's own privacy policy for how they handle that request.
+    </p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">Contact</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      Questions about this policy can be directed via <a href="https://msnugget.com/" class="underline hover:text-heading">msnugget.com</a>.
+    </p>
+  </section>
+</BaseLayout>

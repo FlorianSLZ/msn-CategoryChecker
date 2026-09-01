@@ -1,0 +1,18 @@
+{
+  "name": "Category Checker | MSNugget",
+  "short_name": "Category Checker",
+  "description": "Check website categories across security and web filtering platforms.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#181818",
+  "theme_color": "#39a751",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

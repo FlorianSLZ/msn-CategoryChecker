@@ -1,0 +1,61 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+}
+
+const {
+  title = "Category Checker | MSNugget",
+  description = "Check website categories across security and web filtering platforms.",
+  path = "/",
+} = Astro.props;
+
+const site = Astro.site ?? new URL("https://categorychecker.msnugget.com");
+const canonicalUrl = new URL(path, site).toString();
+const ogImageUrl = new URL("/og-image.svg", site).toString();
+
+const softwareApplicationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Category Checker",
+  description,
+  url: canonicalUrl,
+  applicationCategory: "SecurityApplication",
+  operatingSystem: "Any (web-based)",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "MSNugget",
+    url: "https://msnugget.com/",
+  },
+};
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href={canonicalUrl} />
+
+<meta name="color-scheme" content="dark light" />
+<meta name="theme-color" content="#181818" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:site_name" content="Category Checker" />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:type" content="image/svg+xml" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(softwareApplicationJsonLd)} />

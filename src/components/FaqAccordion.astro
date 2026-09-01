@@ -1,0 +1,73 @@
+---
+const faqs = [
+  {
+    question: "Is Category Checker affiliated with Microsoft, FortiGuard, Cisco, Zscaler, or Netskope?",
+    answer:
+      "No. Category Checker is an independent MSNugget tool. It is not affiliated with, endorsed by, or sponsored by any of the providers it queries.",
+  },
+  {
+    question: "Are the provider results live data?",
+    answer:
+      "Not yet. Category Checker currently ships with mock providers that return deterministic sample data, so the interface and provider architecture can be validated before real API integrations are wired in.",
+  },
+  {
+    question: "Do you store the domains I check?",
+    answer:
+      "No lookup history is sent to a server or stored in a database. Recent lookups are kept only in your browser's local storage so you can quickly re-check a domain.",
+  },
+  {
+    question: "How do I add a real provider integration?",
+    answer:
+      "Each provider implements the same CategoryProvider interface. Swap a mock provider's checkCategory function for an authenticated API call and register any secrets as server-only environment variables — no UI changes are required.",
+  },
+  {
+    question: "Why might providers disagree on a domain's category?",
+    answer:
+      "Each vendor maintains its own crawler and classification pipeline, so categories, update frequency, and taxonomy names can differ. That disagreement is exactly what Category Checker is built to surface.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+};
+---
+
+<section id="faq" class="wrap py-16" aria-labelledby="faq-title">
+  <h2 id="faq-title" class="max-w-[640px] text-[28px] font-medium leading-[1.15] tracking-[-0.5px] text-heading sm:text-[36px]">
+    Frequently asked questions
+  </h2>
+
+  <div class="mt-8 flex max-w-[720px] flex-col gap-3">
+    {
+      faqs.map((faq) => (
+        <details class="group rounded-card border border-border bg-bg-elev p-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-[16px] font-medium text-heading">
+            {faq.question}
+            <svg
+              class="h-4 w-4 shrink-0 text-fg-faint transition-transform duration-200 group-open:rotate-180"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </summary>
+          <p class="mt-3 text-[14px] leading-relaxed text-fg">{faq.answer}</p>
+        </details>
+      ))
+    }
+  </div>
+
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqJsonLd)} />
+</section>

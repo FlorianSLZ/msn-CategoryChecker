@@ -1,0 +1,60 @@
+---
+const primaryFeatures = [
+  {
+    title: "Check every provider at once",
+    body: "One domain, five providers, checked in parallel. No more logging into five different consoles to confirm a categorization decision.",
+  },
+  {
+    title: "Built for Global Secure Access rollouts",
+    body: "Purpose-built for admins validating category-based access policies before they go live — catch mismatches between providers before users do.",
+  },
+];
+
+const secondaryFeatures = [
+  "Deep-linkable results — share a checked domain via URL",
+  "Recent lookups remembered locally, never sent anywhere",
+  "Provider-based architecture, ready for real API integrations",
+  "Dark and light themes, system-aware by default",
+];
+---
+
+<section id="about-tool" class="wrap flex flex-col gap-10 py-16" aria-labelledby="features-title">
+  <div class="max-w-[640px]">
+    <h2 id="features-title" class="text-[28px] font-medium leading-[1.15] tracking-[-0.5px] text-heading sm:text-[36px]">
+      One search, five verdicts.
+    </h2>
+    <p class="mt-3 text-[15px] leading-relaxed text-fg">
+      Category Checker queries Microsoft Global Secure Access, FortiGuard, Cisco Umbrella, Zscaler, and Netskope for how they
+      categorize a domain — side by side, so you can spot mismatches before they turn into a broken access policy or a
+      support ticket.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1.2fr_1fr]">
+    <div class="flex flex-col gap-8">
+      {
+        primaryFeatures.map((feature) => (
+          <div>
+            <h3 class="text-[16px] font-medium text-heading">{feature.title}</h3>
+            <p class="mt-2 text-[14px] leading-relaxed text-fg">{feature.body}</p>
+          </div>
+        ))
+      }
+    </div>
+    <div class="rounded-card border border-border p-6">
+      <h3 class="text-[16px] font-medium text-heading">Also included</h3>
+      <ul class="mt-3 flex flex-col gap-2">
+        {
+          secondaryFeatures.map((item) => (
+            <li class="flex items-start gap-2 text-[14px] text-fg">
+              <span class="mt-1 text-accent" aria-hidden="true">
+                &rarr;
+              </span>
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
