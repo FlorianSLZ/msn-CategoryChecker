@@ -24,9 +24,20 @@ interface CategoryProvider {
 }
 ```
 
-- `src/lib/providers/registry.ts` holds the ordered provider list and `checkAllProviders(domain)`, which runs every provider with `Promise.allSettled` and converts a rejected promise into a `status: "error"` result rather than letting one failing provider take down the whole request — every check always resolves to *something* for every provider.
-- `src/lib/providers/mock.ts`'s `createMockProvider()` is the shared factory behind the four still-mocked providers (`fortiguard.ts`, `cisco-umbrella.ts`, `zscaler.ts`, `netskope.ts`). It hashes `slug:domain` to a deterministic category/status/latency so the same domain always returns the same mock result across repeat checks, and the loading state is exercised realistically. **This is placeholder data with no relationship to the domain's real content** — it exists to exercise the UI/architecture before real credentials are available, not to look accurate.
-- `src/pages/api/check.ts` is the only place `checkAllProviders` is called. It normalizes the incoming domain (`normalize.ts`) and returns `{ domain, results }` as JSON. Individual provider files are the seam for real integrations — the client (`checker.ts`) only ever talks to `/api/check` and only ever knows about the `CategoryResult` shape, so swapping a provider's implementation never touches the UI.
+- `src/lib/providers/registry.ts` holds the ordered provider list — **only `microsoftGsaProvider` today** — and `checkAllProviders(domain)`, which runs every registered provider with `Promise.allSettled` and converts a rejected promise into a `status: "error"` result rather than letting one failing provider take down the whole request — every check always resolves to *something* for every provider.
+- `src/lib/providers/mock.ts`'s `createMockProvider()` is the shared mock factory. It's used directly by `microsoft-gsa.ts` as its no-credentials fallback (see below), and is the pattern any future provider should follow too: hash `slug:domain` into a deterministic category/status/latency so the same domain always returns the same mock result and the loading state is exercised realistically. **This is placeholder data with no relationship to the domain's real content** — it exists to exercise the UI/architecture before real credentials are available, not to look accurate.
+- `src/pages/api/check.ts` is the only place `checkAllProviders` is called. It normalizes the incoming domain (`normalize.ts`) and returns `{ domain, results }` as JSON. Individual provider files are the seam for real integrations — the client (`checker.ts`) only ever talks to `/api/check` and only ever knows about the `CategoryResult` shape, so adding or swapping a provider's implementation never touches the UI.
+
+### Why FortiGuard, Cisco Umbrella, Zscaler, and Netskope aren't wired up
+
+Investigated directly (not just from vendor marketing pages) before deciding to scope this down to Microsoft Global Secure Access only:
+
+- **FortiGuard** (`fortiguard.com/webfilter`): returned `403 Forbidden` to a plain server-side request, and failed to load in a real browser tab too — WAF/bot-protected. Automated access requires FortiGuard's premium rating API (a token tied to a Fortinet/FortiCloud account).
+- **Zscaler** (`sitereview.zscaler.com`): has an internal `/api/lookup` endpoint (`405` on GET confirms it exists, wants POST), but POSTing to it returns `403 Forbidden` without a real browser session/CSRF token. The documented API (ZIA URL Categories, or the newer OneAPI) requires a paid ZIA subscription and admin API credentials.
+- **Cisco Umbrella / Talos**: Talos's reputation/category lookup is web-only, no public API (confirmed in Cisco's own support docs). Umbrella's actual categorization API (Investigate) is a paid product requiring a subscription and API key.
+- **Netskope**: confirmed customer-only in Netskope's own docs — both the URL Lookup tool and its REST API v2 require an active subscription.
+
+None of these offer a legitimate, free, unauthenticated path to real data, and scraping around FortiGuard's or Zscaler's bot protection would be fragile and against their intent. If real API credentials for any of them become available, add a provider file following the `microsoft-gsa.ts` pattern and register it in `registry.ts` — no other changes needed.
 
 ### Microsoft Global Secure Access — real integration
 
@@ -37,18 +48,18 @@ interface CategoryProvider {
 - App-only (client credentials) auth: `src/lib/providers/microsoft-graph-auth.ts` exchanges `MSFT_TENANT_ID` / `MSFT_GSA_CLIENT_ID` / `MSFT_GSA_CLIENT_SECRET` for a token at `https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token` (`grant_type=client_credentials`, `scope=https://graph.microsoft.com/.default`), cached in a module-level variable for the isolate's lifetime.
 - A `404 NotFound` response from the Graph API (`{"error":{"code":"NotFound","message":"No web category found for URL: ..."}}`) is the documented, expected shape for a domain with no categorization — mapped to `status: "uncategorized"`, not `"error"`.
 
-**Credentials are Cloudflare Worker secrets, not Vite/`.env` variables.** They're read via `import { env } from "cloudflare:workers"` (the current `@astrojs/cloudflare` runtime-env access pattern — the older `context.locals.runtime.env` is deprecated in the installed adapter version) inside `microsoft-gsa.ts`, so `checkCategory`'s signature never changed and no other provider file, `registry.ts`, or `check.ts` needed to change. See `.dev.vars.example` for local dev (`wrangler`/`astro dev` reads secrets from `.dev.vars`, never from `.env`) and `wrangler secret put` for production. **If the three env vars aren't set, `microsoftGsaProvider` transparently falls back to the same mock behavior as the other four providers** — the tool stays usable without a GSA tenant, it just doesn't return real data.
+**Credentials are Cloudflare Worker secrets, not Vite/`.env` variables.** They're read via `import { env } from "cloudflare:workers"` (the current `@astrojs/cloudflare` runtime-env access pattern — the older `context.locals.runtime.env` is deprecated in the installed adapter version) inside `microsoft-gsa.ts`, so `checkCategory`'s signature never changed and no other provider file, `registry.ts`, or `check.ts` needed to change. See `.dev.vars.example` for local dev (`wrangler`/`astro dev` reads secrets from `.dev.vars`, never from `.env`) and `wrangler secret put` for production. **If the three env vars aren't set, `microsoftGsaProvider` transparently falls back to `createMockProvider()`** — the tool stays usable without a GSA tenant, it just doesn't return real data.
 
 ## Why an API route instead of calling providers from the browser
 
-Real provider APIs (Microsoft Graph, FortiGuard, Cisco Umbrella Investigate, Zscaler, Netskope) require authenticated calls with secrets that must never reach client JavaScript, and several would reject direct browser requests via CORS regardless. Routing every check through `src/pages/api/check.ts` means the mock-to-real swap is transparent to the UI — it was already going through this route from day one.
+Real provider APIs require authenticated calls with secrets that must never reach client JavaScript, and most reject direct browser requests via CORS regardless. Routing every check through `src/pages/api/check.ts` means a mock-to-real swap is transparent to the UI — it was already going through this route from day one.
 
 ## Client-side checker (`src/scripts/checker.ts`)
 
 Imported from `src/pages/index.astro` as a plain module script (not a framework island — there's no framework to island). It:
 
 1. Normalizes input client-side (reusing the same `normalizeDomain()` used server-side) purely for a snappy inline validation message; the API route re-validates authoritatively.
-2. Shows a 5-card skeleton grid while `POST /api/check` is in flight (the mock providers have simulated per-provider latency, so this is visible).
+2. Shows a single generic skeleton block while `POST /api/check` is in flight — not one per provider, since the client doesn't know the registered provider count ahead of the response (and can't safely import the registry to find out: it transitively pulls in code that depends on the Workers runtime).
 3. Renders one card per `CategoryResult`, using `status` to pick a badge color (`categorized` → accent-tinted "ok", `uncategorized` → warn, `error` → err).
 4. Updates `?domain=` via `history.replaceState` and reads it on load, so a checked domain is shareable.
 5. Persists recent lookups (max 12, deduped, newest first) and the theme preference to `localStorage` — nothing else is stored anywhere.

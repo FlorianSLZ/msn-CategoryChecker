@@ -1,17 +1,14 @@
 import type { CategoryProvider, CategoryResult } from "./types";
 import { microsoftGsaProvider } from "./microsoft-gsa";
-import { fortiguardProvider } from "./fortiguard";
-import { ciscoUmbrellaProvider } from "./cisco-umbrella";
-import { zscalerProvider } from "./zscaler";
-import { netskopeProvider } from "./netskope";
 
-export const providers: CategoryProvider[] = [
-  microsoftGsaProvider,
-  fortiguardProvider,
-  ciscoUmbrellaProvider,
-  zscalerProvider,
-  netskopeProvider,
-];
+// Microsoft Global Secure Access only, for now — FortiGuard, Cisco Umbrella,
+// Zscaler, and Netskope were removed after research showed none of them
+// offer a usable unauthenticated lookup (their public pages are bot-
+// protected, and their real APIs require a paid subscription). Add a new
+// entry here once real credentials for one of them are available; follow
+// the pattern in microsoft-gsa.ts (real call with a mock fallback via
+// createMockProvider() in mock.ts) — no other file needs to change.
+export const providers: CategoryProvider[] = [microsoftGsaProvider];
 
 /**
  * Runs every registered provider for a domain and always resolves — a

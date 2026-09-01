@@ -95,11 +95,13 @@ function showLoading(domain: string) {
   resultsSection!.classList.remove("hidden");
   resultsDomainEl!.textContent = domain;
   resultsGrid!.innerHTML = "";
-  for (let i = 0; i < 5; i++) {
-    const skeleton = document.createElement("div");
-    skeleton.className = "h-[148px] animate-pulse rounded-card border border-border bg-bg-elev";
-    resultsGrid!.appendChild(skeleton);
-  }
+  // One generic skeleton rather than N provider-shaped ones — the client
+  // doesn't know how many providers are registered ahead of the response
+  // (and can't safely import the registry: it pulls in provider code that
+  // depends on the Cloudflare Workers runtime).
+  const skeleton = document.createElement("div");
+  skeleton.className = "h-[148px] animate-pulse rounded-card border border-border bg-bg-elev";
+  resultsGrid!.appendChild(skeleton);
 }
 
 const STATUS_LABEL: Record<CategoryResult["status"], string> = {

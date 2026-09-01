@@ -1,14 +1,34 @@
 ---
 const faqs = [
   {
-    question: "Is Category Checker affiliated with Microsoft, FortiGuard, Cisco, Zscaler, or Netskope?",
+    question: "What is Microsoft Global Secure Access web content filtering?",
     answer:
-      "No. Category Checker is an independent MSNugget tool. It is not affiliated with, endorsed by, or sponsored by any of the providers it queries.",
+      "Web content filtering is a feature of Microsoft Entra Internet Access (part of Global Secure Access) that lets administrators allow or block internet traffic based on the category of the destination website — for example blocking \"Gambling\" or \"Adult Content\" tenant-wide, or blocking \"Social Media\" for specific groups. Those policies only work as intended if the category assigned to a domain matches what the administrator expects.",
   },
   {
-    question: "Are the provider results live data?",
+    question: "How do I check a website's Global Secure Access category?",
     answer:
-      "It depends on the deployment. Microsoft Global Secure Access returns real data when the operator has configured Microsoft Graph credentials for it, and falls back to deterministic sample data otherwise. FortiGuard, Cisco Umbrella, Zscaler, and Netskope currently always return sample data, pending real API integrations.",
+      "Type or paste a domain or URL into the search box above and select \"Check Category.\" Category Checker normalizes the input to a bare domain and looks up its Global Secure Access web category, showing the result, status, and when it was checked.",
+  },
+  {
+    question: "Are the results real, live data?",
+    answer:
+      "When this deployment has Microsoft Graph credentials configured, yes — Category Checker calls the same Microsoft Graph API that Global Secure Access itself uses to categorize a domain. Without those credentials configured, it falls back to deterministic sample data so the tool stays usable for evaluation and demos.",
+  },
+  {
+    question: "What does it mean if a domain shows \"Uncategorized\"?",
+    answer:
+      "It means Microsoft's web categorization service doesn't currently have a category on file for that domain — this is common for newly registered, low-traffic, or very niche domains. An uncategorized domain isn't necessarily unsafe; it just hasn't been classified yet, which is worth knowing before you write a filtering policy that assumes every domain has a category.",
+  },
+  {
+    question: "Do I need a Global Secure Access license to use Category Checker?",
+    answer:
+      "No — anyone can use the tool. Whether you see real Microsoft data or sample data depends on whether the person running this deployment has configured Microsoft Graph credentials tied to a tenant with Global Secure Access web content filtering enabled.",
+  },
+  {
+    question: "Is Category Checker free to use?",
+    answer:
+      "Yes. Category Checker is a free tool from the MSNugget family, with no account or sign-up required.",
   },
   {
     question: "Do you store the domains I check?",
@@ -16,14 +36,19 @@ const faqs = [
       "No lookup history is sent to a server or stored in a database. Recent lookups are kept only in your browser's local storage so you can quickly re-check a domain.",
   },
   {
-    question: "How do I add a real provider integration?",
+    question: "Will FortiGuard, Cisco Umbrella, Zscaler, or Netskope be added?",
     answer:
-      "Each provider implements the same CategoryProvider interface. Swap a mock provider's checkCategory function for an authenticated API call and register any secrets as server-only environment variables — no UI changes are required.",
+      "Possibly — the provider architecture already supports it. They're not wired up today because each requires either a paid API subscription we don't have, or would mean scraping a vendor's bot-protected public lookup page, which isn't something we're willing to build. See the About page for details.",
   },
   {
-    question: "Why might providers disagree on a domain's category?",
+    question: "How do I add a real provider integration?",
     answer:
-      "Each vendor maintains its own crawler and classification pipeline, so categories, update frequency, and taxonomy names can differ. That disagreement is exactly what Category Checker is built to surface.",
+      "Every provider implements the same CategoryProvider interface. Implement checkCategory with an authenticated API call, register any secrets as Cloudflare Worker secrets, and register the provider in the registry — no UI changes are required. src/lib/providers/microsoft-gsa.ts is a working example.",
+  },
+  {
+    question: "Is Category Checker affiliated with Microsoft?",
+    answer:
+      "No. Category Checker is an independent MSNugget tool. It is not affiliated with, endorsed by, or sponsored by Microsoft or any other provider it queries.",
   },
 ];
 

@@ -63,7 +63,7 @@ This design system is adapted directly from [Error Hunter](https://errorhunter.a
 
 ## 1. Overview
 
-**Creative North Star: "One search, five verdicts."** Visitors arrive with one question — how is this domain categorized? — and want five answers side by side, fast. Marketing sections build trust and explain the provider architecture; the search bar and the result-card grid are the actual product.
+**Creative North Star: "One search, one real verdict."** Visitors arrive with one question — how is this domain categorized by Global Secure Access? — and want the answer fast. The result-card grid is built to hold several providers side by side as more are wired up; today it holds one. Marketing sections build trust and explain the provider architecture; the search bar and the result card are the actual product.
 
 Dark by default, for the same reason as the rest of the msnugget family: this is IT tooling, not a consumer product, and admins often work in low-ambient, multi-monitor environments. One committed accent (Signal Green, `#39a751`) is used only on active, confirmed, and actionable states.
 

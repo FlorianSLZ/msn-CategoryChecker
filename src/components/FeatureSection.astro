@@ -1,19 +1,19 @@
 ---
 const primaryFeatures = [
   {
-    title: "Check every provider at once",
-    body: "One domain, five providers, checked in parallel. No more logging into five different consoles to confirm a categorization decision.",
+    title: "Real Microsoft Global Secure Access data",
+    body: "Category Checker calls the Microsoft Graph API that backs Entra Internet Access web content filtering, so what you see here is the same category Global Secure Access would use to allow or block that domain — not a guess.",
   },
   {
     title: "Built for Global Secure Access rollouts",
-    body: "Purpose-built for admins validating category-based access policies before they go live — catch mismatches between providers before users do.",
+    body: "Purpose-built for admins validating category-based access policies before they go live — confirm a domain's web category before writing a filtering policy rule around it, instead of finding out after a user is unexpectedly blocked.",
   },
 ];
 
 const secondaryFeatures = [
   "Deep-linkable results — share a checked domain via URL",
   "Recent lookups remembered locally, never sent anywhere",
-  "Provider-based architecture, ready for real API integrations",
+  "Provider-based architecture, ready for more real API integrations",
   "Dark and light themes, system-aware by default",
 ];
 ---
@@ -21,12 +21,20 @@ const secondaryFeatures = [
 <section id="about-tool" class="wrap flex flex-col gap-10 py-16" aria-labelledby="features-title">
   <div class="max-w-[640px]">
     <h2 id="features-title" class="text-[28px] font-medium leading-[1.15] tracking-[-0.5px] text-heading sm:text-[36px]">
-      One search, five verdicts.
+      What is Category Checker?
     </h2>
     <p class="mt-3 text-[15px] leading-relaxed text-fg">
-      Category Checker queries Microsoft Global Secure Access, FortiGuard, Cisco Umbrella, Zscaler, and Netskope for how they
-      categorize a domain — side by side, so you can spot mismatches before they turn into a broken access policy or a
-      support ticket.
+      Category Checker is a free MSNugget tool that looks up how a website or domain is categorized by Microsoft
+      Global Secure Access web content filtering — part of Microsoft Entra Internet Access. Global Secure Access
+      administrators write filtering policies against web categories (like "Social Media," "Streaming Media," or
+      "Business"), and getting that category wrong for even one domain can silently block a business-critical site
+      or leave a risky one reachable. Paste a domain, get its current category back in seconds, and confirm your
+      policy will do what you expect before you ship it.
+    </p>
+    <p class="mt-3 text-[15px] leading-relaxed text-fg">
+      The tool is architected around a pluggable <code class="font-mono text-[13px] text-accent">CategoryProvider</code>{" "}
+      interface, so it isn't limited to Microsoft's data forever — additional security and web-filtering platforms
+      can be added as real credentials become available, without changing how the results are displayed.
     </p>
   </div>
 

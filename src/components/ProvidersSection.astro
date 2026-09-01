@@ -2,12 +2,11 @@
 import { providers } from "@/lib/providers/registry";
 
 const descriptions: Record<string, string> = {
-  "microsoft-gsa": "Category signal used by Microsoft Entra Internet Access web filtering policies.",
-  fortiguard: "FortiGuard Web Filter's category database, used across Fortinet's security portfolio.",
-  "cisco-umbrella": "Cisco Umbrella's DNS-layer category intelligence.",
-  zscaler: "Zscaler's URL categorization used by its Zero Trust Exchange.",
-  netskope: "Netskope's cloud-native web and CASB category classification.",
+  "microsoft-gsa":
+    "Queries the Microsoft Graph API behind Entra Internet Access web content filtering — the same category Global Secure Access uses to enforce policy.",
 };
+
+const plannedProviders = ["FortiGuard", "Cisco Umbrella", "Zscaler", "Netskope"];
 ---
 
 <section id="providers" class="wrap py-16" aria-labelledby="providers-title">
@@ -16,9 +15,9 @@ const descriptions: Record<string, string> = {
       Supported providers
     </h2>
     <p class="mt-3 text-[15px] leading-relaxed text-fg">
-      Microsoft Global Secure Access returns real data when this deployment has Microsoft Graph credentials
-      configured (sample data otherwise); FortiGuard, Cisco Umbrella, Zscaler, and Netskope are still sample data
-      pending real integrations. Every provider shares the same pluggable interface — see
+      Microsoft Global Secure Access is the only provider wired to a real API today, and returns real data whenever
+      this deployment has Microsoft Graph credentials configured (deterministic sample data otherwise, so the tool
+      still works without a Global Secure Access tenant). Every provider shares the same pluggable interface — see{" "}
       <code class="font-mono text-[13px] text-accent">ARCHITECTURE.md</code>.
     </p>
   </div>
@@ -38,4 +37,10 @@ const descriptions: Record<string, string> = {
       ))
     }
   </div>
+
+  <p class="mt-6 text-[13px] text-fg-faint">
+    Planned, not yet wired up: {plannedProviders.join(", ")}. They'll appear here once real API credentials for one
+    of them are available — see the <a href="/about" class="underline hover:text-fg">About</a> page for why we don't
+    fake results from a vendor's protected lookup page in the meantime.
+  </p>
 </section>

@@ -7,27 +7,43 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     <h1 class="text-[36px] font-medium leading-[1.15] tracking-[-0.5px] text-heading">About Category Checker</h1>
 
     <p class="text-[15px] leading-relaxed text-fg">
-      Category Checker is a free MSNugget tool that checks how a website or URL is categorized across security and web
-      filtering platforms. It's built for Microsoft Global Secure Access administrators, security administrators, network
-      administrators, cloud architects, and IT professionals who need to validate category-based access decisions quickly.
+      Category Checker is a free MSNugget tool that looks up how a website or URL is categorized by Microsoft Global
+      Secure Access web content filtering, part of Microsoft Entra Internet Access. It's built for Global Secure
+      Access administrators, security administrators, network administrators, cloud architects, and IT
+      professionals who need to confirm a category-based access decision quickly, without opening the full Entra
+      admin center.
     </p>
 
     <h2 class="mt-4 text-[20px] font-medium text-heading">Why it exists</h2>
     <p class="text-[15px] leading-relaxed text-fg">
-      Category-based access policies (in Global Secure Access, a secure web gateway, or a firewall) only work correctly if
-      every enforcement point agrees on how a domain is categorized. In practice, vendors disagree — a domain can be
-      "Business" in one console and "Uncategorized" in another. Category Checker surfaces that disagreement in one place
-      instead of five browser tabs.
+      Category-based access policies only work correctly if the category you expect for a domain is the category
+      the enforcement point actually uses. Global Secure Access web content filtering policies are written against
+      categories like "Social Media," "Streaming Media," or "Business" — get the category wrong (or assume a domain
+      is categorized when it isn't) and you either block something you meant to allow, or leave something reachable
+      that a policy was supposed to catch. Category Checker exists to make that one lookup fast, so it's a two-second
+      check instead of a policy-testing round trip.
     </p>
 
     <h2 class="mt-4 text-[20px] font-medium text-heading">How it works</h2>
     <p class="text-[15px] leading-relaxed text-fg">
-      Every provider implements the same <code class="font-mono text-[13px] text-accent">CategoryProvider</code> interface.
-      Today, all five providers return mock, deterministic sample data so the interface and architecture can be built and
-      validated before wiring in real vendor APIs. See
+      Category Checker calls the Microsoft Graph <code class="font-mono text-[13px] text-accent">getWebCategoryByUrl</code>{" "}
+      API — the same categorization data Global Secure Access itself enforces against — using an app-only Entra ID
+      registration with the <code class="font-mono text-[13px] text-accent">NetworkAccess.Read.All</code> permission.
+      Every provider (Microsoft Global Secure Access today, more planned) implements the same{" "}
+      <code class="font-mono text-[13px] text-accent">CategoryProvider</code> interface, so adding another vendor's
+      real API later doesn't change how results are displayed. See{" "}
       <a href="https://msnugget.com/" class="underline hover:text-heading">msnugget.com</a> for the rest of the MSNugget
       tool family, and this project's <code class="font-mono text-[13px] text-accent">ARCHITECTURE.md</code> for the technical
       design.
+    </p>
+
+    <h2 class="mt-4 text-[20px] font-medium text-heading">Why aren't FortiGuard, Cisco Umbrella, Zscaler, and Netskope wired up yet?</h2>
+    <p class="text-[15px] leading-relaxed text-fg">
+      Each of those vendors either requires a paid subscription and API credentials we don't have, or only offers a
+      free public lookup page that's actively protected against exactly the kind of automated request this tool
+      would need to make. Rather than scrape around that protection — which would be fragile and against the
+      vendor's intent — Category Checker only shows real results for providers it has legitimate API access to.
+      They'll be added as real integrations if and when that access is available.
     </p>
 
     <h2 class="mt-4 text-[20px] font-medium text-heading">Independence</h2>
