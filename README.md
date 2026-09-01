@@ -38,11 +38,11 @@ npm run dev       # http://localhost:4321
 ## Build & deploy
 
 ```bash
-npm run build      # outputs to dist/ (client) + a Cloudflare Pages Function for /api/check
+npm run build      # outputs dist/client (static assets) + dist/server (the /api/check Worker)
 npm run preview     # preview the built output locally via wrangler
 ```
 
-Deploy target is **Cloudflare Pages** (`wrangler.toml` + `@astrojs/cloudflare`). Connect the repo in the Cloudflare dashboard (build command `npm run build`, output directory `dist`), or deploy via `wrangler pages deploy dist`.
+Deploy target is a **Cloudflare Worker with static assets** (`wrangler.toml` + `@astrojs/cloudflare`) — not classic Cloudflare Pages. Connect the repo to Cloudflare's Git-integration "Workers Builds" (build command `npm run build`, deploy command `npx wrangler deploy`), or deploy manually with `npx wrangler deploy --config dist/server/wrangler.json` after building. See `ARCHITECTURE.md` for why `wrangler.toml` deliberately omits `pages_build_output_dir`.
 
 ## Environment variables
 

@@ -1,4 +1,10 @@
 name = "msn-categorychecker"
 compatibility_date = "2026-08-01"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = "dist"
+
+# NOTE: no `pages_build_output_dir` here. This project deploys as a Worker
+# with static assets (`wrangler deploy`, driven by @astrojs/cloudflare's
+# generated dist/server/wrangler.json), not classic Cloudflare Pages. Setting
+# `pages_build_output_dir` makes Wrangler apply Pages' reserved-binding-name
+# validation to that generated config, which rejects its "ASSETS" assets
+# binding and fails the deploy.
