@@ -9,12 +9,6 @@ export default defineConfig({
   session: false,
   adapter: cloudflare({
     imageService: 'passthrough',
-    // Prerender static pages with plain Node instead of workerd — none of
-    // them touch Cloudflare bindings, and the workerd prerender path pulls
-    // in an auto-generated wrangler config that currently fails validation
-    // (its "ASSETS" binding name collides with a name Wrangler reserves for
-    // Pages projects).
-    prerenderEnvironment: 'node',
   }),
   integrations: [sitemap()],
   vite: {

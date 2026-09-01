@@ -19,7 +19,7 @@ Built in the same [msnugget](https://msnugget.com/) design system as the rest of
 ## Features
 
 - **Five providers checked in parallel** — Microsoft Global Secure Access, FortiGuard, Cisco Umbrella, Zscaler, Netskope.
-- **Provider-based architecture** — every provider implements the same `CategoryProvider` interface (see [`ARCHITECTURE.md`](./ARCHITECTURE.md)). Currently mocked with deterministic sample data; swapping in a real API is a one-file change.
+- **Provider-based architecture** — every provider implements the same `CategoryProvider` interface (see [`ARCHITECTURE.md`](./ARCHITECTURE.md)). Microsoft Global Secure Access calls the real Graph API when credentials are configured (falling back to mock data otherwise); the other four are still deterministic sample data. Swapping any of them for a real API is a one-file change.
 - **Deep-linkable results** — `?domain=` in the URL, shareable and auto-runs on load.
 - **Recent lookups** — remembered in `localStorage`, never sent to a server.
 - **Dark / light theme**, system-aware by default.
@@ -46,15 +46,22 @@ Deploy target is a **Cloudflare Worker with static assets** (`wrangler.toml` + `
 
 ## Environment variables
 
-Copy `.env.example` to `.env` and fill in what you need — nothing is hardcoded, and everything is optional (the site works with no `.env` at all).
+Two separate mechanisms, on purpose — don't mix them up:
 
-| Variable | Purpose |
-|---|---|
-| `PUBLIC_ANALYTICS_PROVIDER` | `plausible` \| `umami` \| `none` (default) |
-| `PUBLIC_PLAUSIBLE_DOMAIN` / `PUBLIC_PLAUSIBLE_SCRIPT_URL` | Plausible config |
-| `PUBLIC_UMAMI_WEBSITE_ID` / `PUBLIC_UMAMI_SCRIPT_URL` | Umami config |
-| `PUBLIC_FEATURE_RECENT_LOOKUPS` | Feature flag for the recent-lookups chip row |
-| `*_API_KEY` (commented out) | Server-only credentials for real provider integrations, consumed only in `src/pages/api/check.ts` |
+- **Build-time / public config** — copy `.env.example` to `.env`. Vite inlines `PUBLIC_`-prefixed values at build time; everything here is optional (the site works with no `.env` at all).
+
+  | Variable | Purpose |
+  |---|---|
+  | `PUBLIC_ANALYTICS_PROVIDER` | `plausible` \| `umami` \| `none` (default) |
+  | `PUBLIC_PLAUSIBLE_DOMAIN` / `PUBLIC_PLAUSIBLE_SCRIPT_URL` | Plausible config |
+  | `PUBLIC_UMAMI_WEBSITE_ID` / `PUBLIC_UMAMI_SCRIPT_URL` | Umami config |
+  | `PUBLIC_FEATURE_RECENT_LOOKUPS` | Feature flag for the recent-lookups chip row |
+
+- **Runtime secrets (real provider credentials)** — copy `.dev.vars.example` to `.dev.vars` for local dev; use `wrangler secret put <NAME>` (or the Cloudflare dashboard) in production. These are Cloudflare Worker secrets, read via `cloudflare:workers`' `env`, not Vite — see `ARCHITECTURE.md`.
+
+  | Variable | Purpose |
+  |---|---|
+  | `MSFT_TENANT_ID` / `MSFT_GSA_CLIENT_ID` / `MSFT_GSA_CLIENT_SECRET` | Entra ID app registration (client-credentials flow, `NetworkAccess.Read.All` application permission) for the real Microsoft Global Secure Access provider. Unset → that provider falls back to mock data. |
 
 ## Project structure
 
@@ -76,9 +83,11 @@ See [`ARCHITECTURE.md`](./ARCHITECTURE.md) for the provider abstraction and rend
 
 ## Adding a real provider
 
+`src/lib/providers/microsoft-gsa.ts` is a working example (real Microsoft Graph API call, with a mock fallback when credentials are absent) — the pattern for the other four is the same:
+
 1. Open `src/lib/providers/<provider>.ts`.
 2. Replace the `createMockProvider(...)` call with your own object implementing `CategoryProvider` (see `src/lib/providers/types.ts`), calling the vendor's API inside `checkCategory`.
-3. Add any required secret to `.env` (server-only, no `PUBLIC_` prefix) and read it via `import.meta.env` inside that file — it's only ever evaluated in `src/pages/api/check.ts`'s server context, never bundled to the client.
+3. Add any required secret to `.dev.vars` locally / `wrangler secret put` in production (see Environment variables above), and read it inside that file via `import { env } from "cloudflare:workers"` — never `import.meta.env`, which won't see Worker secrets.
 
 No other file changes — the UI, registry, and API route are all provider-agnostic.
 
@@ -97,7 +106,7 @@ Free, independent, privacy-first tools for Microsoft admins — explore them all
 
 ## Disclaimer
 
-Category Checker is an **independent project** and is **not affiliated with, endorsed by, or sponsored by** Microsoft, Fortinet, Cisco, Zscaler, or Netskope. Provider results — currently mocked sample data — should always be confirmed against the provider's own console before being relied on operationally.
+Category Checker is an **independent project** and is **not affiliated with, endorsed by, or sponsored by** Microsoft, Fortinet, Cisco, Zscaler, or Netskope. Four of the five providers still return mocked sample data (FortiGuard, Cisco Umbrella, Zscaler, Netskope); the Microsoft Global Secure Access result is real when configured, mocked otherwise. Always confirm against the provider's own console before relying on any result operationally.
 
 ## License
 

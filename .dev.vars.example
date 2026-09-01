@@ -1,0 +1,22 @@
+# Cloudflare Workers secrets for LOCAL DEV ONLY. Copy this file to `.dev.vars`
+# (gitignored) and fill in real values — `wrangler`/`astro dev` reads secrets
+# from `.dev.vars`, not from `.env` (Vite's `.env` only covers PUBLIC_-
+# prefixed, build-time-inlined variables; these are runtime Worker secrets,
+# read via `import { env } from "cloudflare:workers"`).
+#
+# In production, set the same names with:
+#   npx wrangler secret put MSFT_TENANT_ID
+#   npx wrangler secret put MSFT_GSA_CLIENT_ID
+#   npx wrangler secret put MSFT_GSA_CLIENT_SECRET
+# (or via the Cloudflare dashboard's Worker > Settings > Variables page).
+#
+# Leave these unset (locally or in production) to keep using the built-in
+# mock Microsoft Global Secure Access provider — src/lib/providers/microsoft-gsa.ts
+# falls back to it automatically when credentials aren't configured.
+#
+# Requires an Entra ID app registration with the NetworkAccess.Read.All
+# APPLICATION permission (admin-consented), and a tenant with Global Secure
+# Access / Entra Internet Access web content filtering enabled.
+MSFT_TENANT_ID=
+MSFT_GSA_CLIENT_ID=
+MSFT_GSA_CLIENT_SECRET=

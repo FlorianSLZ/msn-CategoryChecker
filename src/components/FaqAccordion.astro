@@ -8,7 +8,7 @@ const faqs = [
   {
     question: "Are the provider results live data?",
     answer:
-      "Not yet. Category Checker currently ships with mock providers that return deterministic sample data, so the interface and provider architecture can be validated before real API integrations are wired in.",
+      "It depends on the deployment. Microsoft Global Secure Access returns real data when the operator has configured Microsoft Graph credentials for it, and falls back to deterministic sample data otherwise. FortiGuard, Cisco Umbrella, Zscaler, and Netskope currently always return sample data, pending real API integrations.",
   },
   {
     question: "Do you store the domains I check?",
