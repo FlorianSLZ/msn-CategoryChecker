@@ -1,4 +1,6 @@
 ---
+import SectionGlow from "@/components/SectionGlow.astro";
+
 const faqs = [
   {
     question: "What is Microsoft Global Secure Access web content filtering?",
@@ -66,7 +68,9 @@ const faqJsonLd = {
 };
 ---
 
-<section id="faq" class="wrap py-16" aria-labelledby="faq-title">
+<section id="faq" class="relative overflow-hidden" aria-labelledby="faq-title">
+  <SectionGlow side="left" />
+  <div class="wrap py-16">
   <h2 id="faq-title" class="max-w-[640px] text-[28px] font-medium leading-[1.15] tracking-[-0.5px] text-heading sm:text-[36px]">
     Frequently asked questions
   </h2>
@@ -92,6 +96,7 @@ const faqJsonLd = {
         </details>
       ))
     }
+  </div>
   </div>
 
   <script type="application/ld+json" is:inline set:html={JSON.stringify(faqJsonLd)} />

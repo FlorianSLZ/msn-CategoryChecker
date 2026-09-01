@@ -103,13 +103,14 @@ Flat at rest, with one deliberate, narrowly scoped exception (see "Ambient glow"
 
 ### Ambient glow
 
-Three places carry a resting Signal Green glow, added deliberately to soften the flat-at-rest system without diluting the Signal Rule — each is a genuinely primary/brand element, not a decorative flourish:
+A resting Signal Green glow appears in a handful of deliberate places, added to soften the flat-at-rest system without diluting the Signal Rule — each is a genuinely primary/brand element or a page-rhythm device, not a decorative flourish scattered everywhere:
 
 - **Hero background wash** (`--accent-wash`): a large, very soft `radial-gradient` centered above the hero content (`640px 360px`, fading to transparent by 70%). Atmospheric lighting, not an elevation shadow — no offset/blur mechanics apply to it the way they do to a box-shadow.
+- **Section-edge washes** (`--accent-wash`, `SectionGlow.astro`): each major landing-page section below the hero (`FeatureSection`, `ProvidersSection`, `FaqAccordion`) carries one large soft blob bleeding in from a screen edge — alternating left/right down the page (left, right, left) so scrolling has a quiet rhythm instead of a repeated identical accent. Deliberately off to the side and mostly out of the reading column, not behind any text, so it reads as ambience, not a focal point. The section must be `relative overflow-hidden` and unconstrained by `.wrap` itself (the wrap-constrained content nests inside it) so the glow can bleed toward the actual viewport edge rather than being clipped to the 1120px column.
 - **Primary CTA button** (`--accent-glow`, `Button.astro`'s `primary` variant only): a real offset+blur shadow (`0 8px 24px -6px`, deepening slightly on hover), not a centered halo. Ghost buttons stay shadow-free.
 - **Brand glyph in the header** (`--accent-glow` via `drop-shadow`): small, offset, present only in the sticky header — the footer's glyph stays plain so the effect doesn't read as "every green icon glows."
 
-`--accent-wash` and `--accent-glow` are theme-aware CSS custom properties (see `src/styles/global.css`), calibrated separately for dark/light so the glow reads correctly against both surfaces.
+`--accent-wash` and `--accent-glow` are theme-aware CSS custom properties (see `src/styles/global.css`), calibrated separately for dark/light so the glow reads correctly against both surfaces. Content pages (About, Privacy, Terms) don't carry any of this — it's scoped to the landing page's own persuade-mode sections.
 
 ## 6. Do's and Don'ts
 

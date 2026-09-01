@@ -1,4 +1,6 @@
 ---
+import SectionGlow from "@/components/SectionGlow.astro";
+
 const primaryFeatures = [
   {
     title: "Real Microsoft Global Secure Access data",
@@ -18,7 +20,9 @@ const secondaryFeatures = [
 ];
 ---
 
-<section id="about-tool" class="wrap flex flex-col gap-10 py-16" aria-labelledby="features-title">
+<section id="about-tool" class="relative overflow-hidden" aria-labelledby="features-title">
+  <SectionGlow side="left" />
+  <div class="wrap flex flex-col gap-10 py-16">
   <div class="max-w-[640px]">
     <h2 id="features-title" class="text-[28px] font-medium leading-[1.15] tracking-[-0.5px] text-heading sm:text-[36px]">
       What is Category Checker?
@@ -64,5 +68,6 @@ const secondaryFeatures = [
         }
       </ul>
     </div>
+  </div>
   </div>
 </section>

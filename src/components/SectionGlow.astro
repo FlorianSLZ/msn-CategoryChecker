@@ -1,0 +1,19 @@
+---
+// A soft ambient glow bleeding in from one side of a full-bleed section
+// wrapper — atmospheric, not a focal point. See DESIGN.md "Ambient glow".
+// The parent section must be `relative overflow-hidden` and NOT itself
+// width-constrained by `.wrap`, so the glow can extend toward the actual
+// viewport edge instead of being clipped to the 1120px content column.
+interface Props {
+  side: "left" | "right";
+}
+
+const { side } = Astro.props;
+const sideClass = side === "left" ? "-left-32 sm:-left-16" : "-right-32 sm:-right-16";
+---
+
+<div
+  class={`pointer-events-none absolute top-1/2 ${sideClass} -z-10 h-[380px] w-[380px] -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,var(--accent-wash),transparent)]`}
+  aria-hidden="true"
+>
+</div>

@@ -1,5 +1,6 @@
 ---
 import { providers } from "@/lib/providers/registry";
+import SectionGlow from "@/components/SectionGlow.astro";
 
 const descriptions: Record<string, string> = {
   "microsoft-gsa":
@@ -9,7 +10,9 @@ const descriptions: Record<string, string> = {
 const plannedProviders = ["FortiGuard", "Cisco Umbrella", "Zscaler", "Netskope"];
 ---
 
-<section id="providers" class="wrap py-16" aria-labelledby="providers-title">
+<section id="providers" class="relative overflow-hidden" aria-labelledby="providers-title">
+  <SectionGlow side="right" />
+  <div class="wrap py-16">
   <div class="mb-10 max-w-[640px]">
     <h2 id="providers-title" class="text-[28px] font-medium leading-[1.15] tracking-[-0.5px] text-heading sm:text-[36px]">
       Supported providers
@@ -43,4 +46,5 @@ const plannedProviders = ["FortiGuard", "Cisco Umbrella", "Zscaler", "Netskope"]
     of them are available — see the <a href="/about" class="underline hover:text-fg">About</a> page for why we don't
     fake results from a vendor's protected lookup page in the meantime.
   </p>
+  </div>
 </section>
