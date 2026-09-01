@@ -39,6 +39,8 @@
   --accent-border: rgba(57, 167, 81, 0.55);
   --accent-btn: #39a751;
   --accent-deep: #2a7d3c;
+  --accent-glow: rgba(57, 167, 81, 0.45); /* ambient glow: primary CTA, brand glyph */
+  --accent-wash: rgba(57, 167, 81, 0.16); /* hero background wash (large-area radial) */
 
   /* Status hues */
   --err: #ff6b6b;
@@ -91,6 +93,8 @@
   --accent-border: rgba(57, 167, 81, 0.45);
   --accent-btn: #2a7d3c;
   --accent-deep: #1f5c2c;
+  --accent-glow: rgba(42, 125, 60, 0.35);
+  --accent-wash: rgba(57, 167, 81, 0.1);
 
   --err: #c33232;
   --warn: #b9791f;

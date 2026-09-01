@@ -99,11 +99,21 @@ Unchanged: `999px` (pill) on every interactive control — buttons, the search i
 
 ## 5. Elevation
 
-Flat at rest. Result cards reveal a border + `0 4px 16px rgba(0,0,0,0.25)` shadow together on hover, never independently — same compound-state rule as the reference.
+Flat at rest, with one deliberate, narrowly scoped exception (see "Ambient glow" below). Result cards reveal a border + `0 4px 16px rgba(0,0,0,0.25)` shadow together on hover, never independently — same compound-state rule as the reference. Filter pills, chips, status badges, and secondary/ghost buttons stay flat at rest — the exception below is not a general license to add shadows everywhere.
+
+### Ambient glow
+
+Three places carry a resting Signal Green glow, added deliberately to soften the flat-at-rest system without diluting the Signal Rule — each is a genuinely primary/brand element, not a decorative flourish:
+
+- **Hero background wash** (`--accent-wash`): a large, very soft `radial-gradient` centered above the hero content (`640px 360px`, fading to transparent by 70%). Atmospheric lighting, not an elevation shadow — no offset/blur mechanics apply to it the way they do to a box-shadow.
+- **Primary CTA button** (`--accent-glow`, `Button.astro`'s `primary` variant only): a real offset+blur shadow (`0 8px 24px -6px`, deepening slightly on hover), not a centered halo. Ghost buttons stay shadow-free.
+- **Brand glyph in the header** (`--accent-glow` via `drop-shadow`): small, offset, present only in the sticky header — the footer's glyph stays plain so the effect doesn't read as "every green icon glows."
+
+`--accent-wash` and `--accent-glow` are theme-aware CSS custom properties (see `src/styles/global.css`), calibrated separately for dark/light so the glow reads correctly against both surfaces.
 
 ## 6. Do's and Don'ts
 
-Carried over unchanged from the reference (see `msn-errorhunter/DESIGN.md` for the full original if needed):
+Carried over unchanged from the reference (see `msn-errorhunter/DESIGN.md` for the full original if needed), with the ambient-glow exception noted above:
 
 - **Do** reserve Signal Green for active/confirmed/actionable states only.
 - **Do** apply pill radius to every interactive control, card radius to every content container.
@@ -111,6 +121,6 @@ Carried over unchanged from the reference (see `msn-errorhunter/DESIGN.md` for t
 - **Do** provide a visible `outline: 2px solid var(--accent); outline-offset: 2px` on every `:focus-visible` state.
 - **Do** respect `prefers-reduced-motion` on every transition.
 - **Don't** use Muted (`#666666`/`#888888`) for content text.
-- **Don't** add resting shadows.
+- **Don't** add resting shadows outside the three ambient-glow spots above — chips, secondary buttons, and cards stay flat at rest.
 - **Don't** style this to look like an official Microsoft, Fortinet, Cisco, Zscaler, or Netskope product — no vendor color palettes, no implied affiliation.
 - **Don't** introduce a second accent color.

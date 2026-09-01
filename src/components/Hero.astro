@@ -4,7 +4,10 @@ import Button from "@/components/Button.astro";
 const examples = ["microsoft.com", "github.com", "youtube.com"];
 ---
 
-<section class="wrap flex flex-col items-center gap-6 pb-16 pt-16 text-center sm:pt-24" aria-labelledby="hero-title">
+<section
+  class="wrap relative flex flex-col items-center gap-6 bg-[radial-gradient(640px_360px_at_50%_-8%,var(--accent-wash),transparent_70%)] pb-16 pt-16 text-center sm:pt-24"
+  aria-labelledby="hero-title"
+>
   <span class="inline-flex items-center gap-2 rounded-pill border border-accent-border bg-accent-soft px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[1.1px] text-heading">
     <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
     Powered by Microsoft Global Secure Access
